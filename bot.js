@@ -49,4 +49,4 @@ client.on(Discord.Events.MessageCreate, async message => {
     }
 });
 
-client.login('MTA5NjEyMzYzOTUxNjExMDg1OA.GWfAuu.0jdIJmmMtDrdmoSB6dljlYDa_C1x4Kj9wqgpNI');
+client.login('');
