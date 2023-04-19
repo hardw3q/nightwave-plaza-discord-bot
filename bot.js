@@ -1,15 +1,10 @@
 const Discord = require('discord.js');
-const ytdl = require('ytdl-core');
-const ffmpeg = require('ffmpeg-static');
-const opus = require('@discordjs/opus');
-const request = require('request')
 const { joinVoiceChannel, createAudioResource, createAudioPlayer} = require('@discordjs/voice');
-const {cleanContent} = require("discord.js");
 const dotenv = require('dotenv');
 const client = new Discord.Client({intents: 33409});
 dotenv.config({path: '.env'})
 client.once('ready', () => {
-    console.log('Ready! on token ');
+    console.log('Ready! on tokeng ');
 });
 
 client.on(Discord.Events.MessageCreate, async message => {
