@@ -5,13 +5,11 @@ const opus = require('@discordjs/opus');
 const request = require('request')
 const { joinVoiceChannel, createAudioResource, createAudioPlayer} = require('@discordjs/voice');
 const {cleanContent} = require("discord.js");
-
-
-
+const dotenv = require('dotenv');
 const client = new Discord.Client({intents: 33409});
-
+dotenv.config({path: '.env'})
 client.once('ready', () => {
-    console.log('Ready!');
+    console.log('Ready! on token ');
 });
 
 client.on(Discord.Events.MessageCreate, async message => {
@@ -49,4 +47,4 @@ client.on(Discord.Events.MessageCreate, async message => {
     }
 });
 
-client.login('');
+client.login(process.env.TOKEN);
