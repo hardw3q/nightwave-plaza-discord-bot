@@ -1,18 +1,17 @@
 const Discord = require('discord.js');
 const { joinVoiceChannel, createAudioResource, createAudioPlayer} = require('@discordjs/voice');
 const dotenv = require('dotenv');
-const {RichPresenceAssets, Activity} = require("discord.js");
+const {RichPresenceAssets, Activity, Constants} = require("discord.js");
 const axios = require("axios");
 const JSON = require("request/lib/cookies");
 const DiscordRPC = require("discord-rpc");
 const {error} = require("util");
+const {stringify} = require("querystring");
 const client = new Discord.Client({intents: 33409});
-const clientID = '1098347803996065892'
-dotenv.config({path: '.env'})
 const RPC = new DiscordRPC.Client({transport:'ipc'})
-let ReadyRPC = false;
+dotenv.config({path: '.env'})
 
-DiscordRPC.register(clientID)
+let ReadyRPC = false;
 client.once('ready', async () => {
     let commands = client.application?.commands
     const trackData = await getTrackInfo()
@@ -26,10 +25,7 @@ client.once('ready', async () => {
     })
     console.log('Ready! on token ');
 });
-RPC.on('ready', async() => {
-    ReadyRPC = true;
-    console.log('RPC is Ready')
-})
+
 client.on("interactionCreate", async (interaction) => {
     if(!interaction.isCommand()){
         return
@@ -51,24 +47,12 @@ async function getTrackInfo(){
     setTimeout(await getTrackInfo, req.data.song.length*1000-req.data.song.position*1000)
     client.user.setActivity({
         name: `${req.data.song.title} - ${req.data.song.artist}`,
-        type: 2,
+        type: 0,
         url: 'https://plaza.one/',
     })
-    if(ReadyRPC && RPC) {
-        await RPC.setActivity({
-            details: 'https://plaza.one/',
-            state: `${req.data.song.title} - ${req.data.song.artist}`,
-            startTime: Date.now(),
-            endTime: Date.now() + (req.data.song.length * 1000 - req.data.song.position * 1000),
-            large_image: 'discord-icon',
-            small_image: 'discord-icon',
-            small_text: 'RPC',
-            large_text: 'RPC',
-        })
-        console.log('RPC UPDATED')
-    }
     return req.data.song
 }
+
 async function playRadio(interaction){
     const voiceChannel = interaction.member.voice.channel;
     if (!voiceChannel) {
@@ -100,7 +84,7 @@ async function stopRadio(interaction){
     console.log('Stopping playback in ' + voiceChannel.name)
     interaction.reply('Stopping playback in ' + voiceChannel.name);
 }
-
 client.login(process.env.TOKEN);
-RPC.login({clientId: clientID})
+
+
 
